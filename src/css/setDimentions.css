@@ -1,0 +1,28 @@
+.wrapper-2 {
+	margin-top: 20px;
+}
+#big-picture-cabinets {
+	display: block;
+}
+.wrapper-2 > img {
+	margin: 0 auto;
+}
+.wrapper-3 input {
+	padding: 5px;
+	margin: 5px 0 20px 0;
+	width: 100px;
+}
+.wrapper-3 .dimension-field > label {
+	display: inline-block;
+	margin: 0 0 10px 20px;
+}
+.dimension-field {
+	display: inline-block;
+	width: 20%;
+}
+.wrapper-3 .invisible {
+	visibility: hidden;
+}
+.name-of-field {
+	width: 37%
+}

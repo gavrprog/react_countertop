@@ -1,0 +1,10 @@
+.additionally > div {
+	margin: 0 0 10px 50px;
+}
+/*input[type=checkbox] {
+    width: 25px;
+    height: 25px;
+}*/
+.additionally > div >  label {
+	margin-left: 5px;
+}

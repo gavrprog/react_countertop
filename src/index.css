@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html, body {
+height: 100%;
+}
+body {
+font-family: 'Open Sans Condensed', sans-serif;	
+font-weight: normal;
+}
+.main-wrap {
+	margin: 100px 0;
+}
+main {
+	border-style: solid;
+	border-color: grey;
+	max-width: 1000px;
+	margin: 0 auto;
+}
+.wrap {
+	width: 100%;
+	min-height: 100%;
+	position: relative;	
+}
+.hidden-data {
+	display: none;
+}
+.num-step-title {
+	font-size: 24px;
+    display: inline-block;
+    font-weight: 700;
+    color: darkgrey;
+    border: 2px solid darkgrey;
+    border-radius: 4px;
+    margin-right: 20px;
+    padding: 2px 10px;
+}
+.step-title {
+	margin: 20px 0 20px 20px;
+}

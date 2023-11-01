@@ -1,0 +1,15 @@
+.counter-grid {
+	display: grid;
+	grid-template-columns: 5% 5% 10% auto;
+	margin-left: 50px;
+}
+.choose-currency {
+	display: flex;
+	flex-direction: column;
+}
+.choose-currency > label {
+	margin: 0 auto;
+}
+#answer {
+	padding: 5px;
+}

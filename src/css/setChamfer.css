@@ -1,0 +1,12 @@
+.edges {
+	display: flex;
+	justify-content: center;
+}
+.edges > div {
+	display: flex;
+	flex-direction: column;
+	margin: 0 20px;
+}
+.edges > div > label {
+	cursor: pointer;
+}

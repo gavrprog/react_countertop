@@ -1,0 +1,32 @@
+form {
+	margin: 0 0 50px 50px;
+	width: fit-content;
+    border: 2px solid darkgrey;
+    padding: 20px;
+    border-radius: 10px;
+	box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.25);
+}
+.form-sending > input,
+.form-sending > label,
+.form-sending > button {
+	display: block;
+}
+form button {
+	margin-top: 40px;
+	padding: 10px;
+	border-radius: 3px;
+}
+form input,
+form textarea
+ {
+	padding: 7px;
+	font-style: italic;
+	outline: none;
+	border: 1px solid grey;
+	color: grey;
+	width: 300px;
+}
+.form-sending span {
+	display: block;
+	color: transparent;
+}
