@@ -4,9 +4,6 @@ import "../css/setDimentions.css"
 export default function SetDimention() {
     return (
         <>
-            <div className="wrapper-2">
-                    <img id="big-picture-cabinets" src="../img/line1.jpg" alt=""/>
-            </div>
             <div className="step-title">		
                 <h2><span className="num-step-title">2</span>Размеры столешницы<span className="emergency"> в миллиметрах*</span>:</h2>
             </div>

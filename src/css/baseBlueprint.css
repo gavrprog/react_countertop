@@ -29,3 +29,12 @@
 .type-form.selected > img {
 	opacity: 1.0;
 }
+.wrapper-2 {
+	margin-top: 20px;
+}
+#big-picture-cabinets {
+	display: block;
+}
+.wrapper-2 > img {
+	margin: 0 auto;
+}
