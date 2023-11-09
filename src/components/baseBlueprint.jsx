@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { selected } from '../store/reducers'
-import picBlueprints from "../data/data.js"
+import { selected } from '../store/reducers'//the name of action
+import { picBlueprints } from "../data/data.js"
 import "../css/baseBlueprint.css"
 
 // const initialValue = {
@@ -12,7 +12,6 @@ import "../css/baseBlueprint.css"
 // }
 
 function Blueprints({click, select}) {
-    console.log(Object.values(picBlueprints))
     return (
         Object.values(picBlueprints).map((element, index) => (
             <div key={Object.keys(picBlueprints)[index]} onClick={click} className={`type-form ${select.id === Object.keys(picBlueprints)[index] && 'selected'}`}>
@@ -23,12 +22,12 @@ function Blueprints({click, select}) {
 }
 
 export default function BaseBlueprint() {
-    const dispatch = useDispatch();
-    const blueprintSelected = useSelector((state) => state.select)
+    const dispatch = useDispatch(); //create transport for "action"
+    const blueprintSelected = useSelector((state) => state.selectBP)//read the state (in this case - whole object) from the store using reducer "selectBP" from store.js
     //const [blueprintSelected, setBlueprintSelected] = useState(initialValue)
 
     const clickHandler = (e) => {
-        dispatch(selected(e.target.id))
+        dispatch(selected(e.target.id))//send to store new value of state (e.target.id). In the reducer we choose the action "selected" (we can have a big count of actions for states)
         //setBlueprintSelected({...initialValue, id: idBlueprint, form: dataForm, path: dataSource})
     }
 

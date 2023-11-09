@@ -6,14 +6,10 @@
 .wrapper-3 .dimension-field > label {
 	display: inline-block;
 	margin: 0 0 10px 20px;
+	width: 200px;
+	text-align: right;
 }
-.dimension-field {
+/* .dimension-field {
 	display: inline-block;
-	width: 20%;
-}
-.wrapper-3 .invisible {
-	visibility: hidden;
-}
-.name-of-field {
-	width: 37%
-}
+
+} */

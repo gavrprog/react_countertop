@@ -3,7 +3,7 @@ import selectReducer from './reducers.js'
 
 const store =  configureStore({
     reducer: {
-        select: selectReducer
+        selectBP: selectReducer
     }
 })
 

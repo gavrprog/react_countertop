@@ -2,6 +2,7 @@ import React from 'react'
 import "../css/additionally.css"
 
 export default function Additionally() {
+
     return (
         <>
             <div className="step-title">
