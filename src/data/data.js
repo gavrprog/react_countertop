@@ -5,17 +5,23 @@ import bigPictureStraight from "../img/line1.jpg"
 import bigPictureCorner from "../img/line2.jpg"
 import bigPictureMulticorner from "../img/line3.jpg"
 
-const picBlueprints = {
-    bluePrint_1: {img: straight, source: bigPictureStraight, form: "straight", alt: "Прямая столешница"},
-    bluePrint_2: {img: corner, source: bigPictureCorner, form: "corner", alt: "Г-образная столешница"},
-    bluePrint_3: {img: multicorner, source: bigPictureMulticorner, form: "multicorner", alt: "П-образная столешница"}
+const picBlueprints = [
+    {id: "bluePrint_1", img: straight, alt: "Прямая столешница"},
+    {id: "bluePrint_2", img: corner, alt: "Г-образная столешница"},
+    {id: "bluePrint_3", img: multicorner, alt: "П-образная столешница"}
+]
+
+const picLarge = {
+    bluePrint_1: {path: bigPictureStraight, form: "straight"},
+    bluePrint_2: {path: bigPictureCorner, form: "corner"},
+    bluePrint_3: {path: bigPictureMulticorner, form: "multicorner"}
 }
 
-const dataDimentions = {
-    a_dimension: {id: "a-dimension-field", labelName: "Ширина столешницы: A =", inputName: "length_A", min: 560, max: 650},
-    b_dimension: {id: "b-dimension-field", labelName: "Длина столешницы: B =", inputName: "length_B", min: 1000, max: 6000},
-    c_dimension: {id: "c-dimension-field", labelName: "C =", inputName: "length_C", min: 1000, max: 6000},
-    d_dimension: {id: "d-dimension-field", labelName: "D =", inputName: "length_D", min: 1000, max: 6000}
-}
+const dataDimentions = [
+    {id: "a_dimension" , idInput: "a-dimension-field", labelName: "Ширина столешницы: A =", inputName: "length_A", min: 560, max: 650},
+    {id: "b_dimension" , idInput: "b-dimension-field", labelName: "Длина столешницы: B =", inputName: "length_B", min: 1000, max: 6000},
+    {id: "c_dimension" , idInput: "c-dimension-field", labelName: "C =", inputName: "length_C", min: 1000, max: 6000},
+    {id: "d_dimension" , idInput: "d-dimension-field", labelName: "D =", inputName: "length_D", min: 1000, max: 6000}
+]
 
-export { picBlueprints, dataDimentions }
+export { picBlueprints, picLarge, dataDimentions }

@@ -10,7 +10,7 @@ import SendCalculation from './components/sendCalculation'
 
 function App() {
   return (
-    <div class="main-wrap">
+    <div className="main-wrap">
       <main>
         <BaseBlueprint />
         <SetDiimentions />

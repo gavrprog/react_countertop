@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { selected } from '../store/reducers'//the name of action
-import { picBlueprints } from "../data/data.js"
+import { picBlueprints, picLarge } from "../data/data.js"
 import "../css/baseBlueprint.css"
 
 // const initialValue = {
@@ -13,9 +13,9 @@ import "../css/baseBlueprint.css"
 
 function Blueprints({click, select}) {
     return (
-        Object.values(picBlueprints).map((element, index) => (
-            <div key={Object.keys(picBlueprints)[index]} onClick={click} className={`type-form ${select.id === Object.keys(picBlueprints)[index] && 'selected'}`}>
-                <img id={Object.keys(picBlueprints)[index]} src={element.img} alt={element.alt}/>
+        picBlueprints.map((element) => (
+            <div key={element.id} onClick={click} className={`type-form ${select.id === element.id && 'selected'}`} >                
+                <img id={element.id} src={element.img} alt={element.alt} />
             </div>
         ))
     )
@@ -27,7 +27,12 @@ export default function BaseBlueprint() {
     //const [blueprintSelected, setBlueprintSelected] = useState(initialValue)
 
     const clickHandler = (e) => {
-        dispatch(selected(e.target.id))//send to store new value of state (e.target.id). In the reducer we choose the action "selected" (we can have a big count of actions for states)
+        const objState = {}
+        const id = e.target.id
+        objState.id = id
+        objState.form = picLarge[id].form
+        objState.path = picLarge[id].path
+        dispatch(selected(objState))//send to store new value of state (e.target.id). In the reducer we choose the action "selected" (we can have a big count of actions for states)
         //setBlueprintSelected({...initialValue, id: idBlueprint, form: dataForm, path: dataSource})
     }
 

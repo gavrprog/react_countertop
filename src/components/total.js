@@ -10,15 +10,15 @@ export default function Total() {
             <div className="counter-grid">
                 <div className="choose-currency">
                     <input id="uah" type="radio" name="count" className="data-for-calculation" checked/>
-                    <label for="uah">грн</label>
+                    <label htmlFor="uah">грн</label>
                 </div>
                 <div className="choose-currency">
                     <input id="dollar" type="radio" name="count" className="data-for-calculation"/>
-                    <label for="dollar">$</label>
+                    <label htmlFor="dollar">$</label>
                 </div><div></div>
                 <div>
                     <input id="answer" type="text" name="count-answer"/>
-                    <label for="answer">$ / грн</label>
+                    <label htmlFor="answer">$ / грн</label>
                 </div>	
             </div>
         </>
