@@ -1,5 +1,14 @@
 import React from "react";
 import "../css/setColor.css"
+import avantIMG from '../img/logo/avant-logo.png'
+import cesarstoneIMG from '../img/logo/caesarstone-logo.png'
+import silestoneIMG from '../img/logo/silestone-logo.jpg'
+import atemIMG from '../img/logo/atem-logo.png'
+import cimstoneIMG from '../img/logo/cimstone-logo.png'
+import intekstonetIMG from '../img/logo/intekstone-logo.png'
+import restonqtIMG from '../img/logo/restonq-logo.png'
+import samsungIMG from '../img/logo/samsung-logo.png'
+import doNotChoosenColorIMG from '../img/colors/do-not-choose-pic.jpg'
 
 export default function SetColor() {
     return (
@@ -9,20 +18,20 @@ export default function SetColor() {
             </div>
             <div className="wrapper-4">
                 <div id="list-producers" className="producers">
-                    <div className="wrapp-img-producers"><img id="avant" src="../img/logo/avant-logo.png" alt="avant"/></div>
-                    <div className="wrapp-img-producers"><img id="caesarstone" src="../img/logo/caesarstone-logo.png" alt="caesarstone"/></div>
-                    <div className="wrapp-img-producers"><img id="silestone" src="../img/logo/silestone-logo.jpg" alt="silestone"/></div>
-                    <div className="wrapp-img-producers"><img id="atem" src="../img/logo/atem-logo.png" alt="atem"/></div>
-                    <div className="wrapp-img-producers"><img id="cimstone" src="../img/logo/cimstone-logo.png" alt="cimstone"/></div>
-                    <div className="wrapp-img-producers"><img id="intekstone" src="../img/logo/intekstone-logo.png" alt="intekstone"/></div>
-                    <div className="wrapp-img-producers"><img id="restonq" src="../img/logo/restonq-logo.png" alt="restonq"/></div>
-                    <div className="wrapp-img-producers"><img id="samsung" src="../img/logo/samsung-logo.png" alt="samsung"/></div>
+                    <div className="wrapp-img-producers selected"><img id="avant" src={avantIMG} alt="avant"/></div>
+                    <div className="wrapp-img-producers"><img id="caesarstone" src={cesarstoneIMG} alt="caesarstone"/></div>
+                    <div className="wrapp-img-producers"><img id="silestone" src={silestoneIMG} alt="silestone"/></div>
+                    <div className="wrapp-img-producers"><img id="atem" src={atemIMG} alt="atem"/></div>
+                    <div className="wrapp-img-producers"><img id="cimstone" src={cimstoneIMG} alt="cimstone"/></div>
+                    <div className="wrapp-img-producers"><img id="intekstone" src={intekstonetIMG} alt="intekstone"/></div>
+                    <div className="wrapp-img-producers"><img id="restonq" src={restonqtIMG} alt="restonq"/></div>
+                    <div className="wrapp-img-producers"><img id="samsung" src={samsungIMG} alt="samsung"/></div>
                     <input id="producer-name" type="text" name="chosen-producer" className="data-for-calculation hidden-data" value="avant"/>
                     <input id="color-name" type="text" name="chosen-color" className="data-for-calculation hidden-data" value=""/>
                 </div>
                 <div className="right-side">
                     <div className="current-color">
-                        <img id="current-color" src="../img/colors/do-not-choose-pic.jpg" width="380" height="215" alt=""/>
+                        <img id="current-color" src={doNotChoosenColorIMG} width="380" height="215" alt=""/>
                     </div>
                     <div id="list-spec-colors" className="spec-color">
                         <p>Торговая марка:</p>
