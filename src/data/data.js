@@ -24,4 +24,20 @@ const dataDimentions = [
     {id: "d_dimension" , idInput: "d-dimension-field", labelName: "D =", inputName: "length_D", min: 1000, max: 6000}
 ]
 
-export { picBlueprints, picLarge, dataDimentions }
+const imagesLogo = require.context('../img/logo', false)
+const imageArrayLogo = imagesLogo.keys().map(image => imagesLogo(image))
+
+const producers = [
+    {id: 'avant'},
+    {id: 'caesarstone'},
+    {id: 'silestone'},
+    {id: 'atem'},
+    {id: 'cimstone'},
+    {id: 'intekstone'},
+    {id: 'restonq'},
+    {id: 'samsung'}
+]
+
+producers.forEach((producer, i) => producer.image = imageArrayLogo[i])
+
+export { picBlueprints, picLarge, dataDimentions, producers }
