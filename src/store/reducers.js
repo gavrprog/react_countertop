@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { picBlueprints, picLarge } from "../data/data.js"
+import { picLarge } from "../data/data.js"
 
 const initialState = {
     id: "bluePrint_1",
@@ -11,13 +11,28 @@ const blueprintSelectorReducer = createSlice({
     name: 'select',//the key has to have only this name. This "select" is the name of reducer
     initialState,//the key has to have only this name
     reducers: {//the key has to have only this name
-        selected: (state, action) => {      //name of the action is "selected"                      
-            state.id = action.payload.id
+        currentBlueprint: (state, action) => {      //name of the action is "currentBlueprint"                      
+            state.id = action.payload.id 
             state.form = action.payload.form
             state.path = action.payload.path
         }
     }
 })
 
-export const { selected } = blueprintSelectorReducer.actions
-export default blueprintSelectorReducer.reducer
+const producerSelectReducer = createSlice({
+    name: 'selectProducer',
+    initialState: {name: 'avant'},
+    reducers: {
+        currentProducer: (state, action) => {                  
+            state.name = action.payload.name 
+        }
+    }
+})
+
+const currentBlueprint = blueprintSelectorReducer.actions
+const currentProducer = producerSelectReducer.actions
+
+const selectBlueprint =  blueprintSelectorReducer.reducer
+const selectProducer = producerSelectReducer.reducer
+
+export { selectBlueprint, selectProducer, currentBlueprint, currentProducer } 

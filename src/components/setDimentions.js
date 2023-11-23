@@ -48,7 +48,7 @@ export default function SetDimention() {
                 <h2><span className="num-step-title">2</span>Размеры столешницы<span className="emergency"> в миллиметрах*</span>:</h2>
             </div>
             <div className="wrapper-3">
-                <Dimention selectedBlueprintID={useSelector((state) => state.selectBP.id)}/> {/* selectBP - identifactor of appropriate state in store */}
+                <Dimention selectedBlueprintID={useSelector((state) => state.selectedBP.id)}/> {/* selectedBP - identifactor of appropriate state in store */}
             </div>
         </>
     )

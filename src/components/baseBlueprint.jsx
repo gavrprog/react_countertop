@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { selected } from '../store/reducers'//the name of action
+import { currentBlueprint } from '../store/reducers.js'//the name of action
 import { picBlueprints, picLarge } from "../data/data.js"
 import "../css/baseBlueprint.css"
 
@@ -23,7 +23,7 @@ function Blueprints({click, select}) {
 
 export default function BaseBlueprint() {
     const dispatch = useDispatch(); //create transport for "action"
-    const blueprintSelected = useSelector((state) => state.selectBP)//read the state (in this case - whole object) from the store using reducer "selectBP" from store.js
+    const blueprintSelected = useSelector((state) => state.selectedBP)//read the state (in this case - whole object) from the store using reducer "selectedBP" from store.js
     //const [blueprintSelected, setBlueprintSelected] = useState(initialValue)
 
     const clickHandler = (e) => {
@@ -32,7 +32,7 @@ export default function BaseBlueprint() {
         objState.id = id
         objState.form = picLarge[id].form
         objState.path = picLarge[id].path
-        dispatch(selected(objState))//send to store new value of state (e.target.id). In the reducer we choose the action "selected" (we can have a big count of actions for states)
+        dispatch(currentBlueprint(objState))//send to store new value of state (e.target.id). In the reducer we choose the action "currentBlueprint" (we can have a big count of actions for states)
         //setBlueprintSelected({...initialValue, id: idBlueprint, form: dataForm, path: dataSource})
     }
 

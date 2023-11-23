@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from "react"
+import { useSelector, useDispatch } from 'react-redux';
+import { currentProducer } from '../store/reducers'//the name of action
 import axios from 'axios'
 import { producers } from '../data/data.js'
 import "../css/setColor.css"
-import avantIMG from '../img/logo/avant-logo.png'
-import cesarstoneIMG from '../img/logo/caesarstone-logo.png'
-import silestoneIMG from '../img/logo/silestone-logo.jpg'
-import atemIMG from '../img/logo/atem-logo.png'
-import cimstoneIMG from '../img/logo/cimstone-logo.png'
-import intekstonetIMG from '../img/logo/intekstone-logo.png'
-import restonqtIMG from '../img/logo/restonq-logo.png'
-import samsungIMG from '../img/logo/samsung-logo.png'
 import doNotChoosenColorIMG from '../img/colors/do-not-choose-pic.jpg'
 
-const imagesAvantSmall = require.context('../img/colors/avant', false)
-const imagesAvantZoom = require.context('../img/colors/avant/zoom', true)
-const imageArrayAvantSmall = imagesAvantSmall.keys().map(image => imagesAvantSmall(image))
 
-function ColorsOfProducer() {
+function ColorsOfProducer({arrayMinIMG}) {
+
     return (
-        imageArrayAvantSmall.map((image, index) => (
+        arrayMinIMG.map((image, index) => (
             <div key={image} className="wrapp-img">
                 <img src={image} alt={`image-${index}`} />
                 <p>Название</p>
@@ -27,27 +19,30 @@ function ColorsOfProducer() {
     )
 }
 
-// function Producers(handlClick) {
-//     return(
-//         producers.map((producer) => (
-//             <div className="wrapp-img-producers" key={producer.id}>
-//                 <img id={producer.id} src={producer.image} onClick={handlClick} alt={producer.id}/>
-//             </div>
-//         ))
-//     )
-// }
-
 export default function SetColor() {
-    const [currProducer, setCurrProducer] = useState('avant')
-    const [getReq, setGetReq] = useState('http://localhost:3001/api/avant')
-
-    useEffect((getReq) => {
+    const dispatch = useDispatch()
+    const selectedProducer = useSelector((state) => state.selectedProducer.name)
+    //const [currProducer, setCurrProducer] = useState('avant')
+    const [getReq, setGetReq] = useState('http://localhost:3001/api/prod/' + selectedProducer)
+    const [arrayProducer, setArrayProducer] = useState([])
+    
+    const arrayMinIMG = []
+   
+    useEffect(() => {
         axios.get(getReq)
-          .then((response) => console.log(response.data))
-          .catch((err) => alert('Error when executed AXIOS. The error is:', err))
-      }, [])
+            .then((response) => response.data)
+            .then((array) => setArrayProducer(array))
+            .catch((err) => alert('Error when executed AXIOS in request min avant. The error is:', err))
+        }, [getReq])
 
-    const handlClick = (event) => setCurrProducer(event.target.id)
+    arrayProducer.forEach((obj) => arrayMinIMG.push('https://interkam.od.ua/calculator/img/colors/avant/' + obj.min))
+
+
+    const handlClick = (event) => {
+        const url = 'http://localhost:3001/api/prod/' + event.target.id // need to send this id to the store
+        console.log(url)
+        setGetReq(url)
+    }
 
     return (
         <>
@@ -61,14 +56,6 @@ export default function SetColor() {
                             <img id={producer.id} src={producer.image} onClick={handlClick} alt={producer.id}/>
                         </div>
                     ))}
-                    {/* <div className="wrapp-img-producers selected"><img id="avant" src={avantIMG} alt="avant"/></div>
-                    <div className="wrapp-img-producers"><img id="caesarstone" src={cesarstoneIMG} alt="caesarstone"/></div>
-                    <div className="wrapp-img-producers"><img id="silestone" src={silestoneIMG} alt="silestone"/></div>
-                    <div className="wrapp-img-producers"><img id="atem" src={atemIMG} alt="atem"/></div>
-                    <div className="wrapp-img-producers"><img id="cimstone" src={cimstoneIMG} alt="cimstone"/></div>
-                    <div className="wrapp-img-producers"><img id="intekstone" src={intekstonetIMG} alt="intekstone"/></div>
-                    <div className="wrapp-img-producers"><img id="restonq" src={restonqtIMG} alt="restonq"/></div>
-                    <div className="wrapp-img-producers"><img id="samsung" src={samsungIMG} alt="samsung"/></div> */}
                     <input id="producer-name" type="text" name="chosen-producer" className="data-for-calculation hidden-data" value="avant"/>
                     <input id="color-name" type="text" name="chosen-color" className="data-for-calculation hidden-data" value=""/>
                 </div>
@@ -87,7 +74,7 @@ export default function SetColor() {
                         <p className="fillable" id="size-3"></p>
                     </div>
                     <div id="list-colors" className="colors">     
-                        <ColorsOfProducer />           
+                        <ColorsOfProducer arrayMinIMG={arrayMinIMG}/>           
                     </div>
                 </div>
             </div>
