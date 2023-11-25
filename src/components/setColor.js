@@ -6,14 +6,17 @@ import { producers } from '../data/data.js'
 import "../css/setColor.css"
 import doNotChoosenColorIMG from '../img/colors/do-not-choose-pic.jpg'
 
+const PATH_COLOR = 'https://interkam.od.ua/calculator/img/colors/'
+const PATH_PROD = 'http://localhost:3001/api/prod/'
 
-function ColorsOfProducer({arrayMinIMG}) {
+
+function ColorsOfProducer({arrayMinIMG, selectedProducer}) {
 
     return (
-        arrayMinIMG.map((image, index) => (
-            <div key={image} className="wrapp-img">
-                <img src={image} alt={`image-${index}`} />
-                <p>Название</p>
+        arrayMinIMG.map((image) => (
+            <div key={image.name} className="wrapp-img">
+                <img src={PATH_COLOR + image.min} alt={image.name} />
+                <p>{image.name}</p>
             </div>
         ))
     )
@@ -22,25 +25,19 @@ function ColorsOfProducer({arrayMinIMG}) {
 export default function SetColor() {
     const dispatch = useDispatch()
     const selectedProducer = useSelector((state) => state.selectedProducer.name)
-    //const [currProducer, setCurrProducer] = useState('avant')
-    const [getReq, setGetReq] = useState('http://localhost:3001/api/prod/' + selectedProducer)
+    const [getReq, setGetReq] = useState(PATH_PROD + 'avant')
     const [arrayProducer, setArrayProducer] = useState([])
-    
-    const arrayMinIMG = []
    
     useEffect(() => {
         axios.get(getReq)
-            .then((response) => response.data)
-            .then((array) => setArrayProducer(array))
+            .then((response) => setArrayProducer(response.data))
             .catch((err) => alert('Error when executed AXIOS in request min avant. The error is:', err))
-        }, [getReq])
-
-    arrayProducer.forEach((obj) => arrayMinIMG.push('https://interkam.od.ua/calculator/img/colors/avant/' + obj.min))
-
-
+        }, [getReq]
+    )
+ 
     const handlClick = (event) => {
-        const url = 'http://localhost:3001/api/prod/' + event.target.id // need to send this id to the store
-        console.log(url)
+        const url = PATH_PROD + event.target.id // need to send this id to the store
+        dispatch(currentProducer(event.target.id))
         setGetReq(url)
     }
 
@@ -56,8 +53,8 @@ export default function SetColor() {
                             <img id={producer.id} src={producer.image} onClick={handlClick} alt={producer.id}/>
                         </div>
                     ))}
-                    <input id="producer-name" type="text" name="chosen-producer" className="data-for-calculation hidden-data" value="avant"/>
-                    <input id="color-name" type="text" name="chosen-color" className="data-for-calculation hidden-data" value=""/>
+                    <input id="producer-name" type="text" name="chosen-producer" className="data-for-calculation hidden-data"/>
+                    <input id="color-name" type="text" name="chosen-color" className="data-for-calculation hidden-data"/>
                 </div>
                 <div className="right-side">
                     <div className="current-color">
@@ -74,7 +71,7 @@ export default function SetColor() {
                         <p className="fillable" id="size-3"></p>
                     </div>
                     <div id="list-colors" className="colors">     
-                        <ColorsOfProducer arrayMinIMG={arrayMinIMG}/>           
+                        <ColorsOfProducer arrayMinIMG={arrayProducer} selectedProducer={selectedProducer}/>           
                     </div>
                 </div>
             </div>
