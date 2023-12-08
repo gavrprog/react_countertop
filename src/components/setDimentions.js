@@ -19,7 +19,7 @@ function Dimention({selectedBlueprintID}) {
     })
 
     return (
-        filteredArray.map((dimentionField, index) => (
+        filteredArray.map((dimentionField) => (
             <div key={dimentionField.id} id={dimentionField.id} className="dimension-field">
                 <label>{dimentionField.labelName}&nbsp;</label>
                 <span>
@@ -38,9 +38,7 @@ function Dimention({selectedBlueprintID}) {
     )
 }
 
-
 export default function SetDimention() {
-    // console.log('from dimention component', useSelector((state) => state.selectBP.id))
 
     return (
         <>

@@ -1,16 +1,10 @@
-
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { currentBlueprint } from '../store/reducers.js'//the name of action
 import { picBlueprints, picLarge } from "../data/data.js"
 import "../css/baseBlueprint.css"
 
-// const initialValue = {
-//     id: "bluePrint-1",
-//     form: "straight",
-//     path: picBlueprints[0].source
-// }
-
+//draws 3 common blueprints with countertables
 function Blueprints({click, select}) {
     return (
         picBlueprints.map((element) => (
@@ -24,7 +18,6 @@ function Blueprints({click, select}) {
 export default function BaseBlueprint() {
     const dispatch = useDispatch(); //create transport for "action"
     const blueprintSelected = useSelector((state) => state.selectedBP)//read the state (in this case - whole object) from the store using reducer "selectedBP" from store.js
-    //const [blueprintSelected, setBlueprintSelected] = useState(initialValue)
 
     const clickHandler = (e) => {
         const objState = {}
@@ -33,7 +26,6 @@ export default function BaseBlueprint() {
         objState.form = picLarge[id].form
         objState.path = picLarge[id].path
         dispatch(currentBlueprint(objState))//send to store new value of state (e.target.id). In the reducer we choose the action "currentBlueprint" (we can have a big count of actions for states)
-        //setBlueprintSelected({...initialValue, id: idBlueprint, form: dataForm, path: dataSource})
     }
 
     return (
@@ -44,7 +36,6 @@ export default function BaseBlueprint() {
 
         <div className="wrapper-1">
             <Blueprints click={clickHandler} select={blueprintSelected} />
-            {/* <input id="countertop-view" name="countertopForm" type="text" className="data-for-calculation hidden-data" value={blueprintSelected.form}/> */}
         </div>
         
         <div className="wrapper-2">
