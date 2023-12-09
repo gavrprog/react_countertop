@@ -6,10 +6,8 @@ import axios from 'axios'
 import "../css/setColor.css"
 import doNotChoosenColorIMG from '../img/colors/do-not-choose-pic.jpg'
 
-const PATH_COLOR = 'https://interkam.od.ua/calculator/img/colors/'
-const PATH_LOGO = 'https://interkam.od.ua/calculator/img/logos/'
-const PATH_PRODUCERS = 'http://localhost:3001/api/producers/'
-const PATH_PROD = 'http://localhost:3001/api/prod/'
+const PATH_WEB = 'https://interkam.od.ua/calculator/img'
+const PATH_API = 'http://localhost:3001/api'
 
 
 function ColorsOfProducer({arrayMinIMG, selected, handlClick}) {
@@ -17,7 +15,7 @@ function ColorsOfProducer({arrayMinIMG, selected, handlClick}) {
     return (
         arrayMinIMG.map((image, index) => (
             <div key={image.name} className="wrapp-img">
-                <img id={index} onClick={handlClick} className={(selected === index) ? 'selected' : undefined} src={PATH_COLOR + image.min} alt={image.name}/>
+                <img id={index} onClick={handlClick} className={selected === index ? 'selected' : undefined} src={PATH_WEB + '/colors/' + image.min} alt={image.name}/>
                 <p>{image.name}</p>
             </div>
         ))
@@ -27,10 +25,12 @@ function ColorsOfProducer({arrayMinIMG, selected, handlClick}) {
 export default function SetColor() {
     const dispatch = useDispatch()
     const selectedProducer = useSelector((state) => state.selectedProducer.name)
-    const [getReq, setGetReq] = useState(PATH_PROD + 'avant')
+    const [getReq, setGetReq] = useState(PATH_API + '/avant')
     const [producers, setProducers] = useState([])
     const [arrayProducer, setArrayProducer] = useState([])
-    const [selectedColor, setSelectedColor] = useState(-1)
+    const [selectedColorID, setSelectedColorID] = useState(-1)
+    const [selectedColorDATA, setSelectedColorDATA] = useState({})
+    const [selectedColorName, setSelectedColorName] = useState('')
    
     useEffect(() => {
         axios.get(getReq)
@@ -40,20 +40,31 @@ export default function SetColor() {
     )
 
     useEffect(() => {
-        axios.get(PATH_PRODUCERS)
+        axios.get(PATH_API + '/producers/')
         .then((response) => setProducers(response.data))
-        .catch((err) => alert('Error when executed AXIOS in request ppoducers names with logo. The error is:', err))
+        .catch((err) => alert('Error when executed AXIOS in request producers names with logo. The error is:', err))
     }, [])
  
+    useEffect(() => {
+        if (selectedColorName) {
+            axios.get(PATH_API + '/' + selectedProducer + '/' + selectedColorName)
+            .then((response) => setSelectedColorDATA(response.data[0]))
+            .catch((err) => alert('Error when executed AXIOS in request max pic by color name. The error is:', err))
+        }
+    }, [selectedProducer, selectedColorName])
+
     const handlClickProducer = (event) => {
-        const url = PATH_PROD + event.target.id // need to send this id to the store
+        const url = PATH_API + '/' + event.target.id // need to send this id to the store
         dispatch(currentProducer(event.target.id))
         setGetReq(url)
-        setSelectedColor(-1)
+        setSelectedColorID(-1)
+        setSelectedColorName('')
+        setSelectedColorDATA({})
     }
 
     const handlClickColor = (event) => {
-        setSelectedColor(+event.target.id)
+        setSelectedColorID(+event.target.id)
+        setSelectedColorName(event.target.alt)
     }
 
     return (
@@ -65,7 +76,7 @@ export default function SetColor() {
                 <div id="list-producers" className="producers">
                     {producers.map((producer) => (
                         <div className={`wrapp-img-producers ${producer.name === selectedProducer && 'selected'}`} key={producer.name}>
-                            <img id={producer.name} src={PATH_LOGO + producer.image} onClick={handlClickProducer} alt={producer.name}/>
+                            <img id={producer.name} src={PATH_WEB + '/logos/' + producer.image} onClick={handlClickProducer} alt={producer.name}/>
                         </div>
                     ))}
                     {/* <input id="producer-name" type="text" name="chosen-producer" className="data-for-calculation hidden-data"/>
@@ -73,20 +84,25 @@ export default function SetColor() {
                 </div>
                 <div className="right-side">
                     <div className="current-color">
-                        <img id="current-color" src={doNotChoosenColorIMG} width="380" height="215" alt=""/>
+                        <img id="current-color" 
+                            src={selectedColorDATA.max ? PATH_WEB + '/colors/' + selectedColorDATA.max : doNotChoosenColorIMG}
+                            width="380"
+                            height="215"
+                            alt={selectedColorName || 'Цвет не выбран'}
+                        />
                     </div>
                     <div id="list-spec-colors" className="spec-color">
                         <p>Торговая марка:</p>
-                        <p className="fillable" id="trade-mark"></p>
+                        <p className="fillable" id="trade-mark">{selectedProducer.toUpperCase()}</p>
                         <p>Цвет:</p>
-                        <p className="fillable" id="slab-color"></p>
+                        <p className="fillable" id="slab-color">{selectedColorName || "Цвет не выбран"}</p>
                         <p>Размер листа:</p>
-                        <p className="fillable" id="size-1"></p>
-                        <p className="fillable" id="size-2"></p>
-                        <p className="fillable" id="size-3"></p>
+                        <p className="fillable" id="size-1">(N) 12 мм:&nbsp;{selectedColorDATA.thinLength ? selectedColorDATA.thinLength + ' x ' + selectedColorDATA.thinHeight : "-"}</p>
+                        <p className="fillable" id="size-2">(N) 20 мм:&nbsp;{selectedColorDATA.normalLength ? selectedColorDATA.normalLength + ' x ' + selectedColorDATA.normalHeight : "-"}</p>
+                        <p className="fillable" id="size-3">(J) 20 мм:&nbsp;{selectedColorDATA.jamboLength ? selectedColorDATA.jamboLength + ' x ' + selectedColorDATA.jamboHeight : "-"}</p>
                     </div>
                     <div id="list-colors" className="colors">     
-                        <ColorsOfProducer arrayMinIMG={arrayProducer} selected={selectedColor} handlClick={handlClickColor}/>           
+                        <ColorsOfProducer arrayMinIMG={arrayProducer} selected={selectedColorID} handlClick={handlClickColor}/>           
                     </div>
                 </div>
             </div>
