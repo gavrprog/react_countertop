@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useSelector, useDispatch } from 'react-redux';
 import { currentProducer } from '../store/reducers'//the name of action
+import useWindowDimensions from './hook/useWindowDimention'
 import axios from 'axios'
-// import { producers } from '../data/data.js'
+import { Zoom, IconButton, Paper } from '@mui/material'
+// import IconButton from '@mui/material/IconButton'
+import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone'
 import "../css/setColor.css"
 import doNotChoosenColorIMG from '../img/colors/do-not-choose-pic.jpg'
 
 const PATH_WEB = 'https://interkam.od.ua/calculator/img'
 const PATH_API = 'http://localhost:3001/api'
-
 
 function ColorsOfProducer({arrayMinIMG, selected, handlClick}) {
 
@@ -25,12 +27,16 @@ function ColorsOfProducer({arrayMinIMG, selected, handlClick}) {
 export default function SetColor() {
     const dispatch = useDispatch()
     const selectedProducer = useSelector((state) => state.selectedProducer.name)
+    const { width } = useWindowDimensions()
+
     const [getReq, setGetReq] = useState(PATH_API + '/avant')
     const [producers, setProducers] = useState([])
     const [arrayProducer, setArrayProducer] = useState([])
     const [selectedColorID, setSelectedColorID] = useState(-1)
     const [selectedColorDATA, setSelectedColorDATA] = useState({})
     const [selectedColorName, setSelectedColorName] = useState('')
+    const [isClickZoom, setIsClickZoom] = useState(false)
+
    
     useEffect(() => {
         axios.get(getReq)
@@ -79,17 +85,30 @@ export default function SetColor() {
                             <img id={producer.name} src={PATH_WEB + '/logos/' + producer.image} onClick={handlClickProducer} alt={producer.name}/>
                         </div>
                     ))}
-                    {/* <input id="producer-name" type="text" name="chosen-producer" className="data-for-calculation hidden-data"/>
-                    <input id="color-name" type="text" name="chosen-color" className="data-for-calculation hidden-data"/> */}
                 </div>
                 <div className="right-side">
                     <div className="current-color">
-                        <img id="current-color" 
+                        <img id="current-color"
                             src={selectedColorDATA.max ? PATH_WEB + '/colors/' + selectedColorDATA.max : doNotChoosenColorIMG}
-                            width="380"
-                            height="215"
                             alt={selectedColorName || 'Цвет не выбран'}
+                            onClick={() => setIsClickZoom((prevStat) => !prevStat)}
                         />
+
+                        <div className={isClickZoom ? "active" : "inactive"} >
+                            <div className="close" style={{opacity: 1}}>×</div>
+                            <img 
+                                src={PATH_WEB + '/colors/' + selectedColorDATA.max} 
+                                width={width - 100} 
+                                height={(width / 380) * 215} 
+                                alt="selected color"
+                            />
+                        </div>
+
+
+
+
+
+
                     </div>
                     <div id="list-spec-colors" className="spec-color">
                         <p>Торговая марка:</p>
