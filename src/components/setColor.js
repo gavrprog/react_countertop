@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useRef } from "react"
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect } from "react"
+import { useSelector, useDispatch } from 'react-redux'
+import { Zoom, Box, Backdrop, Modal } from '@mui/material'
 import { currentProducer } from '../store/reducers'//the name of action
 import useWindowDimensions from './hook/useWindowDimention'
-import axios from 'axios'
-import { Zoom, IconButton, Paper } from '@mui/material'
-// import IconButton from '@mui/material/IconButton'
-import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone'
-import "../css/setColor.css"
 import doNotChoosenColorIMG from '../img/colors/do-not-choose-pic.jpg'
+import axios from 'axios'
+import "../css/setColor.css"
 
-const PATH_WEB = 'https://interkam.od.ua/calculator/img'
+const PATH_WEB = 'https://interkam.od.ua/calculator/img' //add folder "colors" in database to "min" and "max", delete here all "/colors/"
 const PATH_API = 'http://localhost:3001/api'
 
 function ColorsOfProducer({arrayMinIMG, selected, handlClick}) {
@@ -17,7 +15,12 @@ function ColorsOfProducer({arrayMinIMG, selected, handlClick}) {
     return (
         arrayMinIMG.map((image, index) => (
             <div key={image.name} className="wrapp-img">
-                <img id={index} onClick={handlClick} className={selected === index ? 'selected' : undefined} src={PATH_WEB + '/colors/' + image.min} alt={image.name}/>
+                <img 
+                    id={index} 
+                    onClick={handlClick} 
+                    className={selected === index ? 'selected' : undefined} 
+                    src={PATH_WEB + '/colors/' + image.min} alt={image.name}
+                />
                 <p>{image.name}</p>
             </div>
         ))
@@ -26,8 +29,8 @@ function ColorsOfProducer({arrayMinIMG, selected, handlClick}) {
 
 export default function SetColor() {
     const dispatch = useDispatch()
-    const selectedProducer = useSelector((state) => state.selectedProducer.name)
-    const { width } = useWindowDimensions()
+    const selectedProducer = useSelector((state) => state.selectedProducer.name)//read from store selected TM
+    const { width, height } = useWindowDimensions()
 
     const [getReq, setGetReq] = useState(PATH_API + '/avant')
     const [producers, setProducers] = useState([])
@@ -36,12 +39,13 @@ export default function SetColor() {
     const [selectedColorDATA, setSelectedColorDATA] = useState({})
     const [selectedColorName, setSelectedColorName] = useState('')
     const [isClickZoom, setIsClickZoom] = useState(false)
+    const [sizeZoom, setSizeZoom] = useState({heightPic: 0, widthPic: 0})
 
    
     useEffect(() => {
         axios.get(getReq)
-            .then((response) => setArrayProducer(response.data))
-            .catch((err) => alert('Error when executed AXIOS in request the producer price. The error is:', err))
+        .then((response) => setArrayProducer(response.data))
+        .catch((err) => alert('Error when executed AXIOS in request the producer price. The error is:', err))
         }, [getReq]
     )
 
@@ -60,7 +64,7 @@ export default function SetColor() {
     }, [selectedProducer, selectedColorName])
 
     const handlClickProducer = (event) => {
-        const url = PATH_API + '/' + event.target.id // need to send this id to the store
+        const url = PATH_API + '/' + event.target.id //send this id to the store
         dispatch(currentProducer(event.target.id))
         setGetReq(url)
         setSelectedColorID(-1)
@@ -71,6 +75,20 @@ export default function SetColor() {
     const handlClickColor = (event) => {
         setSelectedColorID(+event.target.id)
         setSelectedColorName(event.target.alt)
+    }
+
+    const handlCklickZoomON = (event) => {
+        setIsClickZoom((prevStat) => !prevStat)
+        let heightPic, widthPic
+        const ratio = event.target.offsetWidth / event.target.offsetHeight
+        if (width/height < 1) {
+            widthPic =  width * 0.9
+            heightPic = widthPic / ratio
+        } else {
+            heightPic = height * 0.5
+            widthPic = heightPic * ratio
+        }
+        setSizeZoom(() => ({ ...sizeZoom, heightPic: `${heightPic}`, widthPic: `${widthPic}`}))
     }
 
     return (
@@ -91,23 +109,36 @@ export default function SetColor() {
                         <img id="current-color"
                             src={selectedColorDATA.max ? PATH_WEB + '/colors/' + selectedColorDATA.max : doNotChoosenColorIMG}
                             alt={selectedColorName || 'Цвет не выбран'}
-                            onClick={() => setIsClickZoom((prevStat) => !prevStat)}
+                            onClick={handlCklickZoomON}
                         />
 
-                        <div className={isClickZoom ? "active" : "inactive"} >
-                            <div className="close" style={{opacity: 1}}>×</div>
-                            <img 
-                                src={PATH_WEB + '/colors/' + selectedColorDATA.max} 
-                                width={width - 100} 
-                                height={(width / 380) * 215} 
-                                alt="selected color"
-                            />
-                        </div>
-
-
-
-
-
+                        <Modal
+                            aria-labelledby="transition-modal-title"
+                            aria-describedby="transition-modal-description"
+                            open={isClickZoom}
+                            onClose={() => setIsClickZoom((prevStat) => !prevStat)}
+                            closeAfterTransition
+                            slots={{ backdrop: Backdrop }}//dark background and point disable
+                            slotProps={{ backdrop: {timeout: 500} }}
+                        >
+                            <Zoom in={isClickZoom}>
+                                <Box sx={{
+                                        position: "absolute",
+                                        left: `${(width - sizeZoom.widthPic - 36) / 2}px`,
+                                        top: `${(height - sizeZoom.heightPic -36) / 2}px`,
+                                        bgcolor: "background.paper",
+                                        border: "2px solid #000",
+                                        boxShadow: 24,
+                                        p: 2 //padding
+                                        }}>
+                                    <img
+                                    src={PATH_WEB + '/colors/' + selectedColorDATA.max}
+                                    style={{ position: "relative", width: `${sizeZoom.widthPic}px` }}
+                                    alt={selectedColorName}
+                                    />
+                                </Box>
+                            </Zoom>
+                        </Modal>
 
                     </div>
                     <div id="list-spec-colors" className="spec-color">
