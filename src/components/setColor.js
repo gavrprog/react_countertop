@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch } from 'react-redux'
-import { Zoom, Box, Backdrop, Modal } from '@mui/material'
+import { Zoom, Backdrop, Modal } from '@mui/material'
 import { currentProducer } from '../store/reducers'//the name of action
 import useWindowDimensions from './hook/useWindowDimention'
 import doNotChoosenColorIMG from '../img/colors/do-not-choose-pic.jpg'
@@ -78,17 +78,20 @@ export default function SetColor() {
     }
 
     const handlCklickZoomON = (event) => {
-        setIsClickZoom((prevStat) => !prevStat)
-        let heightPic, widthPic
-        const ratio = event.target.offsetWidth / event.target.offsetHeight
-        if (width/height < 1) {
-            widthPic =  width * 0.9
-            heightPic = widthPic / ratio
-        } else {
-            heightPic = height * 0.5
-            widthPic = heightPic * ratio
+        if (selectedColorDATA.max) {
+            setIsClickZoom((prevStat) => !prevStat)
+            let heightPic, widthPic
+            const ratio = event.target.offsetWidth / event.target.offsetHeight
+            if (width/height < 1) {
+                widthPic =  width * 0.9
+                heightPic = widthPic / ratio
+            } else {
+                heightPic = height * 0.5
+                widthPic = heightPic * ratio
+            }
+            setSizeZoom(() => ({ ...sizeZoom, heightPic: `${heightPic}`, widthPic: `${widthPic}`}))
         }
-        setSizeZoom(() => ({ ...sizeZoom, heightPic: `${heightPic}`, widthPic: `${widthPic}`}))
+
     }
 
     return (
@@ -108,10 +111,10 @@ export default function SetColor() {
                     <div className="current-color">
                         <img id="current-color"
                             src={selectedColorDATA.max ? PATH_WEB + '/colors/' + selectedColorDATA.max : doNotChoosenColorIMG}
+                            style={{cursor: selectedColorDATA.max ? 'pointer' : 'default'}}
                             alt={selectedColorName || 'Цвет не выбран'}
                             onClick={handlCklickZoomON}
                         />
-
                         <Modal
                             aria-labelledby="transition-modal-title"
                             aria-describedby="transition-modal-description"
@@ -121,22 +124,25 @@ export default function SetColor() {
                             slots={{ backdrop: Backdrop }}//dark background and point disable
                             slotProps={{ backdrop: {timeout: 500} }}
                         >
-                            <Zoom in={isClickZoom}>
-                                <Box sx={{
-                                        position: "absolute",
-                                        left: `${(width - sizeZoom.widthPic - 36) / 2}px`,
-                                        top: `${(height - sizeZoom.heightPic -36) / 2}px`,
-                                        bgcolor: "background.paper",
-                                        border: "2px solid #000",
-                                        boxShadow: 24,
-                                        p: 2 //padding
-                                        }}>
-                                    <img
+                            <Zoom 
+                                in={isClickZoom}
+                                sx={{
+                                    position: "absolute",
+                                    bgcolor: "background.paper",
+                                    border: "2px solid #000",
+                                    boxShadow: 24,
+                                    p: 2 //padding
+                                    }}>
+                                <img
                                     src={PATH_WEB + '/colors/' + selectedColorDATA.max}
-                                    style={{ position: "relative", width: `${sizeZoom.widthPic}px` }}
+                                    style={{ 
+                                        position: "relative", 
+                                        width: `${sizeZoom.widthPic}px`,
+                                        left: `${(width - sizeZoom.widthPic - 36) / 2}px`,
+                                        top: `${(height - sizeZoom.heightPic - 36) / 2}px`
+                                    }}
                                     alt={selectedColorName}
-                                    />
-                                </Box>
+                                />
                             </Zoom>
                         </Modal>
 

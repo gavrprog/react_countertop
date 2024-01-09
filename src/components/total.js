@@ -8,7 +8,7 @@ export default function Total() {
                 <h2><span className="num-step-title">6</span>Расчет:</h2>
             </div>
             <div className="counter-grid">
-                <div className="choose-currency">
+                {/* <div className="choose-currency">
                     <input id="uah" type="radio" name="count" className="data-for-calculation" checked/>
                     <label htmlFor="uah">грн</label>
                 </div>
@@ -19,7 +19,7 @@ export default function Total() {
                 <div>
                     <input id="answer" type="text" name="count-answer"/>
                     <label htmlFor="answer">$ / грн</label>
-                </div>	
+                </div>	 */}
             </div>
         </>
     )

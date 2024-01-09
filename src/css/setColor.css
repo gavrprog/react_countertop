@@ -9,7 +9,6 @@
 	cursor: pointer;
 	display: block;
 	margin: 7px auto;
-    /*border-bottom: 1px solid silver;*/
 }
 .wrapp-img-producers > img:hover {
 	transform: scale(1.1,1.1);
@@ -52,12 +51,8 @@
 .wrapp-img > p {
 	position: absolute;
 	width: 89%;
-    /*top: 87.5%;
-    left: 50%;*/
 	left: 2px;
 	padding: 5px;
-   /*-webkit-transform: translate(-50%,-50%);
-    transform: translate(-50%,-50%);*/
     background-color: rgb(255, 255, 255, 0.5);
 	bottom: 1px;
 }
@@ -71,7 +66,6 @@
 	margin: 5px;
 	border: 1px solid black;
 	float: left;
-	cursor: pointer;
 }
 .spec-color {
 	display: inline-block;

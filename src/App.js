@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import './App.css';
+import React from 'react'
+import './App.css'
 import BaseBlueprint from './components/baseBlueprint'
-import SetDiimentions from './components/setDimentions';
-import SetColor from './components/setColor';
-import Additionally from './components/additionally';
+import SetDiimentions from './components/setDimentions'
+import SetColor from './components/setColor'
+import SetChamfer from './components/setChamfer'
+import Additionally from './components/additionally'
 import Total from "./components/total"
 import SendCalculation from './components/sendCalculation'
 
@@ -15,6 +15,7 @@ function App() {
         <BaseBlueprint />
         <SetDiimentions />
         <SetColor />
+        <SetChamfer />
         <Additionally />
         <Total />
         <SendCalculation />
