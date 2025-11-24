@@ -1,30 +1,20 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux';
-import { dataDimentions } from '../data/data'
+import { useFormContext } from 'react-hook-form';
 import "../css/setDimentions.css"
 
-let rules = [
-    ["bluePrint_1", "bluePrint_2", "bluePrint_3"],
-    ["bluePrint_1", "bluePrint_2", "bluePrint_3"],
-    ["bluePrint_2", "bluePrint_3"],
-    ["bluePrint_3"]
-]
-
-function Dimention({selectedBlueprintID}) {
-    
-    const filteredArray = dataDimentions.filter((_, i) => {
-        let flag = false
-        rules[i].forEach((elBoolean) => flag ||= selectedBlueprintID === elBoolean)
-        return flag
-    })
+function Dimention({allShapes, dimentions, selectedShape}) {
+    let dimentionFields = []
+    const numberDimentions = allShapes.filter((currentShape) => currentShape.shape === selectedShape)[0]?.numberDimentions
+    for(let i = 0; i < numberDimentions; i++){
+        dimentionFields.push(dimentions[i])
+    }
 
     return (
-        filteredArray.map((dimentionField) => (
-            <div key={dimentionField.id} id={dimentionField.id} className="dimension-field">
+        dimentionFields.map((dimentionField) => (
+            <div key={dimentionField.fieldId} id={dimentionField.fieldI} className="dimension-field">
                 <label>{dimentionField.labelName}&nbsp;</label>
                 <span>
-                    <input id={dimentionField.idInput} 
-                        type="text" 
+                    <input id={dimentionField.inputId} 
+                        type="number" 
                         name={dimentionField.inputName} 
                         className="filled-field data-for-calculation" 
                         placeholder="0" 
@@ -38,7 +28,9 @@ function Dimention({selectedBlueprintID}) {
     )
 }
 
-export default function SetDimention() {
+export default function SetDimention({allShapes, initDimentions}) {
+    const { watch } = useFormContext();// receive from App the context alle Form
+    const selected = watch("shape"); // текущее выбранное значение на первом шаге - выбор формы
 
     return (
         <>
@@ -46,7 +38,7 @@ export default function SetDimention() {
                 <h2><span className="num-step-title">2</span>Размеры столешницы<span className="emergency"> в миллиметрах*</span>:</h2>
             </div>
             <div className="wrapper-3">
-                <Dimention selectedBlueprintID={useSelector((state) => state.selectedBP.id)}/> {/* selectedBP - identifactor of appropriate state in store */}
+                <Dimention allShapes={allShapes} dimentions={initDimentions} selectedShape={selected}/>
             </div>
         </>
     )

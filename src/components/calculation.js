@@ -1,7 +1,7 @@
 import React from 'react'
-import "../css/total.css"
+import "../css/calculation.css"
 
-export default function Total() {
+export default function Calculation() {
     return (
         <>
             <div className="step-title">

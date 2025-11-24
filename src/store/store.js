@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { selectBlueprint, selectProducer } from './reducers.js'
+import { selectForm, selectProducer } from './reducers.js'
 
 const store =  configureStore({
     reducer: {
-        selectedBP: selectBlueprint,
-        selectedProducer: selectProducer
+        formOfTabletop: selectForm,
+        stoneProducer: selectProducer
     }
 })
 

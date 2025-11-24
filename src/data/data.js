@@ -18,10 +18,10 @@ const picLarge = {
 }
 
 const dataDimentions = [
-    {id: "a_dimension" , idInput: "a-dimension-field", labelName: "Ширина столешницы: A =", inputName: "length_A", min: 560, max: 650},
-    {id: "b_dimension" , idInput: "b-dimension-field", labelName: "Длина столешницы: B =", inputName: "length_B", min: 1000, max: 6000},
-    {id: "c_dimension" , idInput: "c-dimension-field", labelName: "C =", inputName: "length_C", min: 1000, max: 6000},
-    {id: "d_dimension" , idInput: "d-dimension-field", labelName: "D =", inputName: "length_D", min: 1000, max: 6000}
+    {id: "a_dimension" , inputId: "a-dimension-field", labelName: "Ширина столешницы: A =", inputName: "length_A", min: 560, max: 650},
+    {id: "b_dimension" , inputId: "b-dimension-field", labelName: "Длина столешницы: B =", inputName: "length_B", min: 1000, max: 6000},
+    {id: "c_dimension" , inputId: "c-dimension-field", labelName: "C =", inputName: "length_C", min: 1000, max: 6000},
+    {id: "d_dimension" , inputId: "d-dimension-field", labelName: "D =", inputName: "length_D", min: 1000, max: 6000}
 ]
 
 export { picBlueprints, picLarge, dataDimentions }

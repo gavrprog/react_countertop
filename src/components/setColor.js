@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch } from 'react-redux'
-import { Zoom, Backdrop, Modal } from '@mui/material'
 import { currentProducer } from '../store/reducers'//the name of action
-import useWindowDimensions from './hook/useWindowDimention'
+import { Fancybox } from "@fancyapps/ui";
 import doNotChoosenColorIMG from '../img/colors/do-not-choose-pic.jpg'
 import axios from 'axios'
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import "../css/setColor.css"
 
-const PATH_WEB = 'https://interkam.od.ua/calculator/img' //add folder "colors" in database to "min" and "max", delete here all "/colors/"
+const PATH_WEB = 'https://interkam.od.ua/calculator/img'
 const PATH_API = 'http://localhost:3001/api'
 
 function ColorsOfProducer({arrayMinIMG, selected, handlClick}) {
@@ -19,7 +19,7 @@ function ColorsOfProducer({arrayMinIMG, selected, handlClick}) {
                     id={index} 
                     onClick={handlClick} 
                     className={selected === index ? 'selected' : undefined} 
-                    src={PATH_WEB + '/colors/' + image.min} alt={image.name}
+                    src={PATH_WEB + image.min} alt={image.name}
                 />
                 <p>{image.name}</p>
             </div>
@@ -29,8 +29,7 @@ function ColorsOfProducer({arrayMinIMG, selected, handlClick}) {
 
 export default function SetColor() {
     const dispatch = useDispatch()
-    const selectedProducer = useSelector((state) => state.selectedProducer.name)//read from store selected TM
-    const { width, height } = useWindowDimensions()
+    const selectedProducer = useSelector((state) => state.stoneProducer.name)//read from store selected TM
 
     const [getReq, setGetReq] = useState(PATH_API + '/avant')
     const [producers, setProducers] = useState([])
@@ -38,10 +37,15 @@ export default function SetColor() {
     const [selectedColorID, setSelectedColorID] = useState(-1)
     const [selectedColorDATA, setSelectedColorDATA] = useState({})
     const [selectedColorName, setSelectedColorName] = useState('')
-    const [isClickZoom, setIsClickZoom] = useState(false)
-    const [sizeZoom, setSizeZoom] = useState({heightPic: 0, widthPic: 0})
 
-   
+    useEffect(() => {
+        Fancybox.bind("[data-fancybox]")
+        return () => {
+        Fancybox.unbind("[data-fancybox]")
+        Fancybox.close()
+        }
+    }, [])
+
     useEffect(() => {
         axios.get(getReq)
         .then((response) => setArrayProducer(response.data))
@@ -77,23 +81,6 @@ export default function SetColor() {
         setSelectedColorName(event.target.alt)
     }
 
-    const handlCklickZoomON = (event) => {
-        if (selectedColorDATA.max) {
-            setIsClickZoom((prevStat) => !prevStat)
-            let heightPic, widthPic
-            const ratio = event.target.offsetWidth / event.target.offsetHeight
-            if (width/height < 1) {
-                widthPic =  width * 0.9
-                heightPic = widthPic / ratio
-            } else {
-                heightPic = height * 0.5
-                widthPic = heightPic * ratio
-            }
-            setSizeZoom(() => ({ ...sizeZoom, heightPic: `${heightPic}`, widthPic: `${widthPic}`}))
-        }
-
-    }
-
     return (
         <>
             <div className="step-title">
@@ -109,49 +96,26 @@ export default function SetColor() {
                 </div>
                 <div className="right-side">
                     <div className="current-color">
-                        <img id="current-color"
-                            src={selectedColorDATA.max ? PATH_WEB + '/colors/' + selectedColorDATA.max : doNotChoosenColorIMG}
-                            style={{cursor: selectedColorDATA.max ? 'pointer' : 'default'}}
-                            alt={selectedColorName || 'Цвет не выбран'}
-                            onClick={handlCklickZoomON}
-                        />
-                        <Modal
-                            aria-labelledby="transition-modal-title"
-                            aria-describedby="transition-modal-description"
-                            open={isClickZoom}
-                            onClose={() => setIsClickZoom((prevStat) => !prevStat)}
-                            closeAfterTransition
-                            slots={{ backdrop: Backdrop }}//dark background and point disable
-                            slotProps={{ backdrop: {timeout: 500} }}
-                        >
-                            <Zoom 
-                                in={isClickZoom}
-                                sx={{
-                                    position: "absolute",
-                                    bgcolor: "background.paper",
-                                    border: "2px solid #000",
-                                    boxShadow: 24,
-                                    p: 2 //padding
-                                    }}>
-                                <img
-                                    src={PATH_WEB + '/colors/' + selectedColorDATA.max}
-                                    style={{ 
-                                        position: "relative", 
-                                        width: `${sizeZoom.widthPic}px`,
-                                        left: `${(width - sizeZoom.widthPic - 36) / 2}px`,
-                                        top: `${(height - sizeZoom.heightPic - 36) / 2}px`
-                                    }}
+                        {!selectedColorDATA.max ? 
+                            <img id="current-color"
+                                src={doNotChoosenColorIMG}
+                                style={{cursor: 'default'}}
+                                alt='Цвет не выбран'
+                            /> :
+                            <a data-fancybox="image" href={PATH_WEB + selectedColorDATA.max}>
+                                <img id="current-color"
+                                    src={PATH_WEB + selectedColorDATA.max}
+                                    style={{cursor:  'pointer'}}
                                     alt={selectedColorName}
                                 />
-                            </Zoom>
-                        </Modal>
-
+                            </a>
+                        }
                     </div>
                     <div id="list-spec-colors" className="spec-color">
                         <p>Торговая марка:</p>
                         <p className="fillable" id="trade-mark">{selectedProducer.toUpperCase()}</p>
                         <p>Цвет:</p>
-                        <p className="fillable" id="slab-color">{selectedColorName || "Цвет не выбран"}</p>
+                        <p className="fillable" id="slab-color">{selectedColorDATA.color}&nbsp;{selectedColorName || "Цвет не выбран"}</p>
                         <p>Размер листа:</p>
                         <p className="fillable" id="size-1">(N) 12 мм:&nbsp;{selectedColorDATA.thinLength ? selectedColorDATA.thinLength + ' x ' + selectedColorDATA.thinHeight : "-"}</p>
                         <p className="fillable" id="size-2">(N) 20 мм:&nbsp;{selectedColorDATA.normalLength ? selectedColorDATA.normalLength + ' x ' + selectedColorDATA.normalHeight : "-"}</p>

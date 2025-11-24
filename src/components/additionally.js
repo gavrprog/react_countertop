@@ -10,8 +10,8 @@ export default function Additionally() {
             </div>
             <div  className="additionally">
                 <div>
-                    <input id="add-washing" type="checkbox" name="washing" className="data-for-calculation" value="0"/>
-                    <label htmlFor="add-washing">Монтаж мойки под столешницу"</label>
+                    <input id="add-sink" type="checkbox" name="sink" className="data-for-calculation" value="0"/>
+                    <label htmlFor="add-sink">Монтаж мойки под столешницу"</label>
                 </div>		
                 <div>
                     <input id="add-montage" type="checkbox" name="montage" className="data-for-calculation" value="0"/>

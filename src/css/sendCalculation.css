@@ -1,4 +1,4 @@
-form {
+.form-sending {
 	margin: 0 0 50px 50px;
 	width: fit-content;
     border: 2px solid darkgrey;
@@ -11,13 +11,13 @@ form {
 .form-sending > button {
 	display: block;
 }
-form button {
+.form-sending > button {
 	margin-top: 40px;
 	padding: 10px;
 	border-radius: 3px;
 }
-form input,
-form textarea
+.form-sending > input,
+.form-sending > textarea
  {
 	padding: 7px;
 	font-style: italic;
