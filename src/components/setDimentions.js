@@ -1,7 +1,11 @@
 import { useFormContext } from 'react-hook-form';
 import "../css/setDimentions.css"
+import e from 'cors';
 
 function Dimention({allShapes, dimentions, selectedShape}) {
+    const { register } = useFormContext()
+
+    // count how mauch fields must be displayed and collected in array appropriate amount objects
     let dimentionFields = []
     const numberDimentions = allShapes.filter((currentShape) => currentShape.shape === selectedShape)[0]?.numberDimentions
     for(let i = 0; i < numberDimentions; i++){
@@ -10,16 +14,16 @@ function Dimention({allShapes, dimentions, selectedShape}) {
 
     return (
         dimentionFields.map((dimentionField) => (
-            <div key={dimentionField.fieldId} id={dimentionField.fieldI} className="dimension-field">
+            <div key={dimentionField.fieldId} id={dimentionField.fieldId} className="dimension-field">
                 <label>{dimentionField.labelName}&nbsp;</label>
                 <span>
                     <input id={dimentionField.inputId} 
                         type="number" 
-                        name={dimentionField.inputName} 
                         className="filled-field data-for-calculation" 
                         placeholder="0" 
                         min={dimentionField.min} 
-                        max={dimentionField.max}/>
+                        max={dimentionField.max}
+                        {...register(`dimention.${dimentionField.inputName}`)}/>
                     &nbsp;mm
                 </span>
             </div>

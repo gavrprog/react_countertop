@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { useFormContext } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux'
 import { currentProducer } from '../store/reducers'//the name of action
 import { Fancybox } from "@fancyapps/ui";
@@ -10,34 +11,36 @@ import "../css/setColor.css"
 const PATH_WEB = 'https://interkam.od.ua/calculator/img'
 const PATH_API = 'http://localhost:3001/api'
 
-function ColorsOfProducer({arrayMinIMG, selected, handlClick}) {
+function ColorsOfProducer({arrayProducer, selectedColor}) {
+    const { register } = useFormContext()
 
     return (
-        arrayMinIMG.map((image, index) => (
-            <div key={image.name} className="wrapp-img">
-                <img 
-                    id={index} 
-                    onClick={handlClick} 
-                    className={selected === index ? 'selected' : undefined} 
-                    src={PATH_WEB + image.min} alt={image.name}
-                />
-                <p>{image.name}</p>
+        arrayProducer.map((stone, index) => (
+            <div key={index} className="wrapp-img">
+                <label htmlFor={stone.color}>
+                    <input id={stone.color} type="radio" {...register('stone.color')} value={stone.color}/>
+                    <img 
+                        id={index} 
+                        className={selectedColor === stone.color ? 'selected' : undefined} 
+                        src={PATH_WEB + stone.min}
+                        alt={stone.name}
+                    />
+                <span>{stone.name}</span>              
+                </label>
             </div>
         ))
     )
 }
 
 export default function SetColor() {
-    const dispatch = useDispatch()
-    const selectedProducer = useSelector((state) => state.stoneProducer.name)//read from store selected TM
-
-    const [getReq, setGetReq] = useState(PATH_API + '/avant')
+    const { register, watch, setValue } = useFormContext()
+    const selectedColor = watch("stone.color"); // текущее выбранное значение
+    const selectedProducer = watch("stone.producer");
     const [producers, setProducers] = useState([])
     const [arrayProducer, setArrayProducer] = useState([])
-    const [selectedColorID, setSelectedColorID] = useState(-1)
     const [selectedColorDATA, setSelectedColorDATA] = useState({})
-    const [selectedColorName, setSelectedColorName] = useState('')
 
+    // it is needed becous of fancybox - make a pic bigger
     useEffect(() => {
         Fancybox.bind("[data-fancybox]")
         return () => {
@@ -47,39 +50,27 @@ export default function SetColor() {
     }, [])
 
     useEffect(() => {
-        axios.get(getReq)
+        setValue('stone.color', '');
+        setSelectedColorDATA({})
+        axios.get(PATH_API + '/' + selectedProducer)
         .then((response) => setArrayProducer(response.data))
         .catch((err) => alert('Error when executed AXIOS in request the producer price. The error is:', err))
-        }, [getReq]
+        }, [selectedProducer, setValue]
     )
 
     useEffect(() => {
         axios.get(PATH_API + '/producers/')
-        .then((response) => setProducers(response.data))
+        .then((response) => {setProducers(response.data)})
         .catch((err) => alert('Error when executed AXIOS in request producers names with logo. The error is:', err))
     }, [])
  
     useEffect(() => {
-        if (selectedColorName) {
-            axios.get(PATH_API + '/' + selectedProducer + '/' + selectedColorName)
-            .then((response) => setSelectedColorDATA(response.data[0]))
+        if (selectedColor !== '') {
+            axios.get(PATH_API + '/' + selectedProducer + '/' + selectedColor)
+            .then((response) => {setSelectedColorDATA(response.data[0])})
             .catch((err) => alert('Error when executed AXIOS in request max pic by color name. The error is:', err))
         }
-    }, [selectedProducer, selectedColorName])
-
-    const handlClickProducer = (event) => {
-        const url = PATH_API + '/' + event.target.id //send this id to the store
-        dispatch(currentProducer(event.target.id))
-        setGetReq(url)
-        setSelectedColorID(-1)
-        setSelectedColorName('')
-        setSelectedColorDATA({})
-    }
-
-    const handlClickColor = (event) => {
-        setSelectedColorID(+event.target.id)
-        setSelectedColorName(event.target.alt)
-    }
+    }, [selectedColor])
 
     return (
         <>
@@ -90,13 +81,16 @@ export default function SetColor() {
                 <div id="list-producers" className="producers">
                     {producers.map((producer) => (
                         <div className={`wrapp-img-producers ${producer.name === selectedProducer && 'selected'}`} key={producer.name}>
-                            <img id={producer.name} src={PATH_WEB + '/logos/' + producer.image} onClick={handlClickProducer} alt={producer.name}/>
+                            <label>
+                                <input type="radio" {...register('stone.producer')} value={producer.name}/>
+                                <img id={producer.name} src={PATH_WEB + '/logos/' + producer.image} alt={producer.name}/>
+                            </label>
                         </div>
                     ))}
                 </div>
                 <div className="right-side">
                     <div className="current-color">
-                        {!selectedColorDATA.max ? 
+                        {selectedColor === "" ? 
                             <img id="current-color"
                                 src={doNotChoosenColorIMG}
                                 style={{cursor: 'default'}}
@@ -106,7 +100,7 @@ export default function SetColor() {
                                 <img id="current-color"
                                     src={PATH_WEB + selectedColorDATA.max}
                                     style={{cursor:  'pointer'}}
-                                    alt={selectedColorName}
+                                    alt={selectedColor}
                                 />
                             </a>
                         }
@@ -115,14 +109,14 @@ export default function SetColor() {
                         <p>Торговая марка:</p>
                         <p className="fillable" id="trade-mark">{selectedProducer.toUpperCase()}</p>
                         <p>Цвет:</p>
-                        <p className="fillable" id="slab-color">{selectedColorDATA.color}&nbsp;{selectedColorName || "Цвет не выбран"}</p>
+                        <p className="fillable" id="slab-color">{selectedColorDATA.color}&nbsp;{selectedColorDATA.name || "Цвет не выбран"}</p>
                         <p>Размер листа:</p>
                         <p className="fillable" id="size-1">(N) 12 мм:&nbsp;{selectedColorDATA.thinLength ? selectedColorDATA.thinLength + ' x ' + selectedColorDATA.thinHeight : "-"}</p>
                         <p className="fillable" id="size-2">(N) 20 мм:&nbsp;{selectedColorDATA.normalLength ? selectedColorDATA.normalLength + ' x ' + selectedColorDATA.normalHeight : "-"}</p>
                         <p className="fillable" id="size-3">(J) 20 мм:&nbsp;{selectedColorDATA.jamboLength ? selectedColorDATA.jamboLength + ' x ' + selectedColorDATA.jamboHeight : "-"}</p>
                     </div>
                     <div id="list-colors" className="colors">     
-                        <ColorsOfProducer arrayMinIMG={arrayProducer} selected={selectedColorID} handlClick={handlClickColor}/>           
+                        <ColorsOfProducer arrayProducer={arrayProducer} selectedColorName={selectedColor}/>           
                     </div>
                 </div>
             </div>

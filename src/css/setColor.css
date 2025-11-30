@@ -4,13 +4,13 @@
 .producers {
 	width: 260px;
 }
-.wrapp-img-producers > img {
+.wrapp-img-producers > label > img {
 	height: 50px;
 	cursor: pointer;
 	display: block;
 	margin: 7px auto;
 }
-.wrapp-img-producers > img:hover {
+.wrapp-img-producers > label > img:hover {
 	transform: scale(1.1,1.1);
 }
 .producers {
@@ -39,16 +39,20 @@
     text-align: center;
     position: relative;
 }
-.wrapp-img > img {
+.wrapp-img > label > img {
     display: block;
     width: 120px;
     height: 120px;
 	border: 2px solid grey;
 }
-.wrapp-img > img.selected {
+.wrapp-img > label > img.selected {
 	border-color: red;
 }
-.wrapp-img > p {
+.wrapp-img > label > input,
+.wrapp-img-producers > label > input {
+	display: none;
+}
+.wrapp-img > label > span {
 	position: absolute;
 	width: 89%;
 	left: 2px;

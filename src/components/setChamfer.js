@@ -3,7 +3,7 @@ import axios from 'axios'
 import "../css/setChamfer.css"
 
 function Chamfer({arrayChamfer, handleClick, currentChamfer}) {
-    console.log(arrayChamfer)
+    
     return (
         arrayChamfer
         .filter((chamfer) => chamfer.view !== "")
