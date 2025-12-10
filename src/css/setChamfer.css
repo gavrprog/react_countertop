@@ -1,19 +1,16 @@
 .edges {
 	display: flex;
-	justify-content: center;
+	justify-content: left;
 	flex-wrap: wrap;
 	width: 100%;
 }
-.edges > div {
+.edges > div > label{
 	display: flex;
 	flex-direction: column;
 	margin: 0 20px;
-	width: calc(100% / 6);
-}
-.edges > div > label {
 	cursor: pointer;
 }
-.edges > div > label img {
+.edges > div > label > img {
 	display: block;
 	margin: 0 auto;
 }

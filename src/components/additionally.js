@@ -1,7 +1,8 @@
-import React from 'react'
+import { useFormContext } from 'react-hook-form'
 import "../css/additionally.css"
 
 export default function Additionally() {
+    const { register } = useFormContext()
 
     return (
         <>
@@ -10,15 +11,15 @@ export default function Additionally() {
             </div>
             <div  className="additionally">
                 <div>
-                    <input id="add-sink" type="checkbox" name="sink" className="data-for-calculation" value="0"/>
+                    <input id="add-sink" type="checkbox" {...register('additional.sink')} className="data-for-calculation" />
                     <label htmlFor="add-sink">Монтаж мойки под столешницу"</label>
                 </div>		
                 <div>
-                    <input id="add-montage" type="checkbox" name="montage" className="data-for-calculation" value="0"/>
+                    <input id="add-montage" type="checkbox" {...register('additional.montage')} className="data-for-calculation"/>
                     <label htmlFor="add-montage">Монтаж</label>
                 </div>
                 <div>
-                    <input id="add-delivery" type="checkbox" name="delivery" className="data-for-calculation" value="0"/>
+                    <input id="add-delivery" type="checkbox" {...register('additional.delivery')} className="data-for-calculation" />
                     <label htmlFor="add-delivery">Доставка</label>
                 </div>
             </div>

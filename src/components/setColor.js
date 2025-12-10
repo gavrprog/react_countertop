@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useFormContext } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux'
-import { currentProducer } from '../store/reducers'//the name of action
 import { Fancybox } from "@fancyapps/ui";
 import doNotChoosenColorIMG from '../img/colors/do-not-choose-pic.jpg'
 import axios from 'axios'
@@ -40,7 +38,7 @@ export default function SetColor() {
     const [arrayProducer, setArrayProducer] = useState([])
     const [selectedColorDATA, setSelectedColorDATA] = useState({})
 
-    // it is needed becous of fancybox - make a pic bigger
+    // it is needed because of fancybox - make a pic bigger
     useEffect(() => {
         Fancybox.bind("[data-fancybox]")
         return () => {
@@ -67,7 +65,10 @@ export default function SetColor() {
     useEffect(() => {
         if (selectedColor !== '') {
             axios.get(PATH_API + '/' + selectedProducer + '/' + selectedColor)
-            .then((response) => {setSelectedColorDATA(response.data[0])})
+            .then((response) => {
+                setSelectedColorDATA(response.data[0])
+                console.log(response.data[0])
+            })
             .catch((err) => alert('Error when executed AXIOS in request max pic by color name. The error is:', err))
         }
     }, [selectedColor])

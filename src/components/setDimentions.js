@@ -23,7 +23,7 @@ function Dimention({allShapes, dimentions, selectedShape}) {
                         placeholder="0" 
                         min={dimentionField.min} 
                         max={dimentionField.max}
-                        {...register(`dimention.${dimentionField.inputName}`)}/>
+                        {...register(`dimentions.${dimentionField.inputName}`)}/>
                     &nbsp;mm
                 </span>
             </div>

@@ -97,3 +97,6 @@ h2 {
 	font-size: 24px;
 	color: darkgrey;
 }
+.grey-color img{
+filter: grayscale(0.8);
+}

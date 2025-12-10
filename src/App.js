@@ -14,11 +14,11 @@ function App() {
   const methods = useForm({
     defaultValues: {
       shape: "straight",
-      dimention: {
-        length_a: 600,
-        length_b: 0,
-        length_c: 0,
-        length_d: 0,
+      dimentions: {
+        length_a: '600',
+        length_b: '',
+        length_c: '',
+        length_d: '',
       },
       stone: {
         producer: "avant",
@@ -43,36 +43,32 @@ function App() {
   useEffect(() => {
     console.log('Текущее состояние формы:', allFields);
   }, [allFields]);
-
-  const onSubmit = (data) => {
-    axios.post("/api/calc", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-    .then((response) => alert('Calculation complited', response.data))
-    .catch((err) => alert('Data does not sended to calculate. The error is:', err))
-  };
 //-----------------------------------------------------------------------------
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [initShape, setInitShape] = useState([])
   const [initDimentions, setInitDimentions] = useState([])
+  const [initChamfers, setInitChamfers] = useState([])
+  const [result, setResult] = useState('')
 
   useEffect(() => {
     const initialData = async () =>{
       try{
-        const[initShape, initDimentions] = await Promise.all([
+        const[initShape, initDimentions, initChamfers] = await Promise.all([
           axios.get('http://localhost:3001/api/initShape'),
-          axios.get('http://localhost:3001/api/initDimentions')
+          axios.get('http://localhost:3001/api/initDimentions'),
+          axios.get('http://localhost:3001/api/chamfers')
         ])
         setInitShape(initShape.data)
         setInitDimentions(initDimentions.data)
-      } catch(error) {
+        setInitChamfers(initChamfers.data)
+      } 
+      catch(error) {
         setError(error.response?.data?.message || error.message);
         console.error('Ошибка инициализации данных:', error);
-      } finally {
+      } 
+      finally {
         setLoading(false);
       }
     }
@@ -84,7 +80,13 @@ function App() {
     // .catch((err) => alert('Error when executed AXIOS in request the initShape price. The error is:', err))
 
     initialData()
-  }, [])
+  },[])
+  
+  const onSubmit = (defaultValues) => {
+    axios.post("http://localhost:3001/api/calc", defaultValues)
+    .then((response) => setResult(response.data))
+    .catch((err) => alert('Data does not sended to calculate. The error is:', err))
+  };
 
   if (loading) {
     return (
@@ -115,9 +117,9 @@ function App() {
             <SetShape allShapes={initShape}/>
             <SetDiimentions allShapes={initShape} initDimentions={initDimentions}/>
             <SetColor />
-            <SetChamfer />
+            <SetChamfer initChamfers={initChamfers}/>
             <Additionally />
-            <Calculation />
+            <Calculation result={result}/>
           </form>
           <SendCalculation />
         </main>
