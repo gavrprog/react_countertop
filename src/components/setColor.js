@@ -10,11 +10,15 @@ const PATH_WEB = 'https://interkam.od.ua/calculator/img'
 // const PATH_API = 'http://localhost:3001/api'
 const PATH_API = process.env.REACT_APP_API_URL;
 
-function ColorsOfProducer({arrayProducer, selectedColor}) {
+function ColorsOfProducer({arrayProducer, selectedColor, searchValue}) {
     const { register } = useFormContext()
+    const arrayFiltered = arrayProducer.filter((stone) => searchValue 
+        ? stone.color.includes(searchValue) || stone.name.toLowerCase().includes(searchValue.toLowerCase()) 
+        : true
+    )
 
     return (
-        arrayProducer.map((stone, index) => (
+        arrayFiltered.map((stone, index) => (
             <div key={index} className="wrapp-img">
                 <label htmlFor={stone.color}>
                     <input id={stone.color} type="radio" {...register('stone.color')} value={stone.color}/>
@@ -38,6 +42,7 @@ export default function SetColor() {
     const [producers, setProducers] = useState([])
     const [arrayProducer, setArrayProducer] = useState([])
     const [selectedColorDATA, setSelectedColorDATA] = useState({})
+    const [searchValue,setSearchValue] = useState('')
 
     // it is needed because of fancybox - make a pic bigger
     useEffect(() => {
@@ -73,6 +78,10 @@ export default function SetColor() {
             .catch((err) => alert('Error when executed AXIOS in request max pic by color name. The error is:', err))
         }
     }, [selectedColor])
+
+    const handlerSearch = (event) =>{
+        setSearchValue(event.target.value);
+    }
 
     return (
         <>
@@ -117,9 +126,11 @@ export default function SetColor() {
                         <p className="fillable" id="size-2">(N) 20 мм:&nbsp;{selectedColorDATA.normalLength ? selectedColorDATA.normalLength + ' x ' + selectedColorDATA.normalHeight : "-"}</p>
                         <p className="fillable" id="size-3">(J) 20 мм:&nbsp;{selectedColorDATA.jamboLength ? selectedColorDATA.jamboLength + ' x ' + selectedColorDATA.jamboHeight : "-"}</p>
                     </div>
+                    <div style={{width: "100%", display: "inline-block"}}></div>                    
                     <div id="list-colors" className="colors">     
-                        <ColorsOfProducer arrayProducer={arrayProducer} selectedColor={selectedColor}/>           
+                        <ColorsOfProducer arrayProducer={arrayProducer} selectedColor={selectedColor} searchValue={searchValue}/>           
                     </div>
+                    <input id="search" type="text" onChange={handlerSearch}/>
                 </div>
             </div>
         </>
