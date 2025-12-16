@@ -35,9 +35,11 @@
 .wrapp-img {
     display: inline-block;
     margin: 3px;
-    cursor: pointer;
     text-align: center;
     position: relative;
+}
+.wrapp-img > label {
+	cursor:  pointer;
 }
 .wrapp-img > label > img {
     display: block;

@@ -6,15 +6,20 @@
 .type-form {
     border: 3px solid transparent;
 	border-radius: 4px;
-	cursor: pointer;
     box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.15);
 }
+.type-form label{
+	cursor: pointer;
+}
 .type-form img {
-	opacity: 0.3;
+	opacity: 0.2;
 	-webkit-transition: all 0.2s ease-out;
     -moz-transition: all 0.2s ease-out;
     -ms-transition: all 0.2s ease-out;
     -o-transition: all 0.2s ease-out;
+}
+.type-form > label > input {
+	display: none;
 }
 .type-form img:hover {
 	opacity: 1.0;

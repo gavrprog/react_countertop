@@ -15,7 +15,7 @@ function App() {
     defaultValues: {
       shape: "straight",
       dimentions: {
-        length_a: '600',
+        length_a: '',
         length_b: '',
         length_c: '',
         length_d: '',
@@ -33,18 +33,7 @@ function App() {
     }
   })
 
-  //-----------------------------------------------------------------------------
-  const { watch } = methods;
-
-  // Отслеживаем все поля
-  const allFields = watch();
-
-  // Выводим в консоль при каждом изменении
-  useEffect(() => {
-    console.log('Текущее состояние формы:', allFields);
-  }, [allFields]);
-//-----------------------------------------------------------------------------
-
+  const PATH_API = process.env.REACT_APP_API_URL;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [initShape, setInitShape] = useState([])
@@ -52,13 +41,32 @@ function App() {
   const [initChamfers, setInitChamfers] = useState([])
   const [result, setResult] = useState('')
 
+  //-----------------------------------------------------------------------------
+  const { watch } = methods;
+  // Отслеживаем все поля
+  const allFields = watch();
+  const jsonAllFeilds = JSON.stringify(allFields)
+  // Выводим в консоль при каждом изменении
+  useEffect(() => {
+    setResult('');
+    console.log('Текущее состояние формы:', allFields);
+
+  }, [jsonAllFeilds]);
+//-----------------------------------------------------------------------------
+
+  const onSubmit = (defaultValues) => {
+    axios.post(`${PATH_API}/calc`, defaultValues)
+    .then((response) => setResult(response.data))
+    .catch((err) => alert('Data does not sended to calculate. The error is:', err))
+  };
+
   useEffect(() => {
     const initialData = async () =>{
       try{
         const[initShape, initDimentions, initChamfers] = await Promise.all([
-          axios.get('http://localhost:3001/api/initShape'),
-          axios.get('http://localhost:3001/api/initDimentions'),
-          axios.get('http://localhost:3001/api/chamfers')
+          axios.get(`${PATH_API}/initShape`),
+          axios.get(`${PATH_API}/initDimentions`),
+          axios.get(`${PATH_API}/chamfers`)
         ])
         setInitShape(initShape.data)
         setInitDimentions(initDimentions.data)
@@ -81,12 +89,6 @@ function App() {
 
     initialData()
   },[])
-  
-  const onSubmit = (defaultValues) => {
-    axios.post("http://localhost:3001/api/calc", defaultValues)
-    .then((response) => setResult(response.data))
-    .catch((err) => alert('Data does not sended to calculate. The error is:', err))
-  };
 
   if (loading) {
     return (
@@ -119,8 +121,9 @@ function App() {
             <SetColor />
             <SetChamfer initChamfers={initChamfers}/>
             <Additionally />
-            <Calculation result={result}/>
+                         <Calculation result={result}/>       
           </form>
+  
           <SendCalculation />
         </main>
       </div>

@@ -7,7 +7,8 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import "../css/setColor.css"
 
 const PATH_WEB = 'https://interkam.od.ua/calculator/img'
-const PATH_API = 'http://localhost:3001/api'
+// const PATH_API = 'http://localhost:3001/api'
+const PATH_API = process.env.REACT_APP_API_URL;
 
 function ColorsOfProducer({arrayProducer, selectedColor}) {
     const { register } = useFormContext()
@@ -23,7 +24,7 @@ function ColorsOfProducer({arrayProducer, selectedColor}) {
                         src={PATH_WEB + stone.min}
                         alt={stone.name}
                     />
-                <span>{stone.name}</span>              
+                <span>{stone.color + " " + stone.name}</span>              
                 </label>
             </div>
         ))
@@ -91,13 +92,13 @@ export default function SetColor() {
                 </div>
                 <div className="right-side">
                     <div className="current-color">
-                        {selectedColor === "" ? 
-                            <img id="current-color"
+                        {selectedColor === ""
+                            ? <img id="current-color"
                                 src={doNotChoosenColorIMG}
                                 style={{cursor: 'default'}}
                                 alt='Цвет не выбран'
-                            /> :
-                            <a data-fancybox="image" href={PATH_WEB + selectedColorDATA.max}>
+                            /> 
+                            : <a data-fancybox="image" href={PATH_WEB + selectedColorDATA.max}>
                                 <img id="current-color"
                                     src={PATH_WEB + selectedColorDATA.max}
                                     style={{cursor:  'pointer'}}
@@ -117,7 +118,7 @@ export default function SetColor() {
                         <p className="fillable" id="size-3">(J) 20 мм:&nbsp;{selectedColorDATA.jamboLength ? selectedColorDATA.jamboLength + ' x ' + selectedColorDATA.jamboHeight : "-"}</p>
                     </div>
                     <div id="list-colors" className="colors">     
-                        <ColorsOfProducer arrayProducer={arrayProducer} selectedColorName={selectedColor}/>           
+                        <ColorsOfProducer arrayProducer={arrayProducer} selectedColor={selectedColor}/>           
                     </div>
                 </div>
             </div>

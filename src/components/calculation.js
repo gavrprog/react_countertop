@@ -23,11 +23,11 @@ export default function Calculation({result}) {
                 </div><div></div> */}
                 <div>
                     <label htmlFor="answer-hrn">Стоимость в грн.</label>                    
-                    <input id="answer-hrn" type="text" name="count-answer" value={result * 42.5}/>
+                    <input id="answer-hrn" type="text" name="count-answer" value={result ? result * 42.5 : ''} readOnly/>
                 </div>
                 <div>
                     <label htmlFor="answer-dol">Стоимость в дол.</label>
-                    <input id="answer-dol" type="text" name="count-answer" value={result}/>
+                    <input id="answer-dol" type="text" name="count-answer" value={result} readOnly/>
                 </div>
                 <button type="submit">РАСЧИТАТЬ</button>	
             </div>
