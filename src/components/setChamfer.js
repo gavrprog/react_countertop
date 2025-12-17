@@ -13,7 +13,7 @@ export default function SetChamfer({initChamfers}) {
                 {initChamfers.map((chamfer) => (
                     <div key={chamfer.type}>
                         <label htmlFor={chamfer.type}>
-                            <img src={'http://interkam.od.ua/calculator/img/' + chamfer.image} alt={chamfer.type}/>
+                            <img src={'http://interkam.od.ua/calculator/img/' + chamfer.image} alt={'фаска кромка ' + chamfer.type}/>
                             <input id={chamfer.type} type="radio" {...register('chamfer')} value={chamfer.type}/>
                         </label>
                     </div>

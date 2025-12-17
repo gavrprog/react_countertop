@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import { useForm, FormProvider } from 'react-hook-form'
+import Spiner from './components/service/spiner'
 import axios from 'axios'
 import SetShape from './components/setShape'
 import SetDiimentions from './components/setDimentions'
@@ -92,19 +93,8 @@ function App() {
 
   if (loading) {
     return (
-      <div style={{
-        background: "rgba(255,255,255,0.5)",
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        fontSize: "24px",
-        fontWeight: "bold"
-      }}>
-        Загрузка…
-      </div>
-    );
+      <Spiner/>
+    )
   }
 
   if (error) {

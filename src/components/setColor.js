@@ -130,7 +130,16 @@ export default function SetColor() {
                     <div id="list-colors" className="colors">     
                         <ColorsOfProducer arrayProducer={arrayProducer} selectedColor={selectedColor} searchValue={searchValue}/>           
                     </div>
-                    <input id="search" type="text" onChange={handlerSearch}/>
+                    {/* <input id="search" type="text" onChange={handlerSearch} placeholder="название или номер цвета"/> */}
+
+
+<div className="wrapp-input">
+                            <div class="text-field__icon-2 text-field__icon-2_search">
+                            <input id="search" class="text-field__input" type="text" onChange={handlerSearch} placeholder="название или номер цвета" />
+                        </div>
+</div>
+
+
                 </div>
             </div>
         </>
