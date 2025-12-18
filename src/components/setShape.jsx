@@ -31,6 +31,7 @@ export default function SetShape({allShapes}) {
                 <div key={currentShape.id} className={`type-form ${selected === currentShape.shape && 'selected'}`} >  
                     <label>
                         <input type="radio" {...register('shape')} value={currentShape.shape}/>
+                        <h2 className="shape-name">{currentShape.alt}</h2>
                         <img id={currentShape.shape} src={PATH_WEB + currentShape.drawing} alt={currentShape.alt} />
                     </label>    
                 </div>

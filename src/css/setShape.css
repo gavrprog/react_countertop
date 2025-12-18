@@ -13,6 +13,8 @@
 }
 .type-form img {
 	opacity: 0.2;
+	display: block;
+	margin: 0 auto;
 	-webkit-transition: all 0.2s ease-out;
     -moz-transition: all 0.2s ease-out;
     -ms-transition: all 0.2s ease-out;
@@ -42,4 +44,7 @@
 }
 .wrapper-2 > img {
 	margin: 0 auto;
+}
+.shape-name{
+	padding: 1rem 1rem 0 1rem;
 }
