@@ -7,7 +7,6 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import "../css/setColor.css"
 
 const PATH_WEB = 'https://interkam.od.ua/calculator/img'
-// const PATH_API = 'http://localhost:3001/api'
 const PATH_API = process.env.REACT_APP_API_URL;
 
 function ColorsOfProducer({arrayProducer, selectedColor, searchValue}) {
@@ -21,7 +20,7 @@ function ColorsOfProducer({arrayProducer, selectedColor, searchValue}) {
         arrayFiltered.map((stone, index) => (
             <div key={index} className="wrapp-img">
                 <label htmlFor={stone.color}>
-                    <input id={stone.color} type="radio" {...register('stone.color')} value={stone.color}/>
+                    <input id={stone.color} type="radio" {...register('stone.color', {required: "Выберите цвет/изображение камня"})} value={stone.color}/>
                     <img 
                         id={index} 
                         className={selectedColor === stone.color ? 'selected' : undefined} 
@@ -77,6 +76,7 @@ export default function SetColor() {
             })
             .catch((err) => alert('Error when executed AXIOS in request max pic by color name. The error is:', err))
         }
+    // eslint-disable-next-line
     }, [selectedColor])
 
     const handlerSearch = (event) =>{
@@ -133,13 +133,11 @@ export default function SetColor() {
                     {/* <input id="search" type="text" onChange={handlerSearch} placeholder="название или номер цвета"/> */}
 
 
-<div className="wrapp-input">
-                            <div class="text-field__icon-2 text-field__icon-2_search">
-                            <input id="search" class="text-field__input" type="text" onChange={handlerSearch} placeholder="название или номер цвета" />
+                    <div className="wrapp-input">
+                        <div className="text-field__icon-2 text-field__icon-2_search">
+                            <input id="search" className="text-field__input" type="text" onChange={handlerSearch} placeholder="название или номер цвета" />
                         </div>
-</div>
-
-
+                    </div>
                 </div>
             </div>
         </>

@@ -1,9 +1,9 @@
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, get } from 'react-hook-form';
 import "../css/setDimentions.css"
-import e from 'cors';
 
 function Dimention({allShapes, dimentions, selectedShape}) {
-    const { register } = useFormContext()
+    const { register, formState: { errors } } = useFormContext()
+
 
     // count how mauch fields must be displayed and collected in array appropriate amount objects
     let dimentionFields = []
@@ -13,21 +13,25 @@ function Dimention({allShapes, dimentions, selectedShape}) {
     }
 
     return (
-        dimentionFields.map((dimentionField) => (
-            <div key={dimentionField.fieldId} id={dimentionField.fieldId} className="dimension-field">
-                <label>{dimentionField.labelName}&nbsp;</label>
-                <span>
-                    <input id={dimentionField.inputId} 
-                        type="number" 
-                        className="filled-field data-for-calculation" 
-                        placeholder="0" 
-                        min={dimentionField.min} 
-                        max={dimentionField.max}
-                        {...register(`dimentions.${dimentionField.inputName}`)}/>
-                    &nbsp;mm
-                </span>
-            </div>
-        ))
+        <>
+            { dimentionFields.map((dimentionField) => {
+                const error = get(errors,`dimentions.${dimentionField.inputName}`);
+                return(
+                    <div key={dimentionField.fieldId} id={dimentionField.fieldId} className="dimension-field">
+                        <label className={error ? "input-error" : undefined}>{dimentionField.labelName}&nbsp;</label>
+                        <span>
+                            <input id={dimentionField.inputId} 
+                                type="number" 
+                                min={dimentionField.min} 
+                                max={dimentionField.max}
+                                {...register(`dimentions.${dimentionField.inputName}`,{ required: `Укажите размер: ${dimentionField.labelName}`})}/>
+                            &nbsp;mm
+                        </span>
+                    </div>
+                )
+            })}
+        </>
+
 
     )
 }
@@ -40,6 +44,10 @@ export default function SetDimention({allShapes, initDimentions}) {
         <>
             <div className="step-title">		
                 <h2><span className="num-step-title">2</span>Размеры столешницы<span className="emergency"> в миллиметрах*</span>:</h2>
+            </div>
+            <div className="description">
+                <p>Допустимый размер ширины столешницы от 560мм до 650мм</p>
+                <p>Допустимый размер длины столешницы от 1000мм до 6000мм</p>
             </div>
             <div className="wrapper-3">
                 <Dimention allShapes={allShapes} dimentions={initDimentions} selectedShape={selected}/>

@@ -1,6 +1,6 @@
 .wrapper-3 input {
 	padding: 5px;
-	margin: 5px 0 20px 0;
+	margin: 0 0 0.7rem 0;
 	width: 100px;
 }
 .wrapper-3 .dimension-field > label {
@@ -9,7 +9,16 @@
 	width: 200px;
 	text-align: right;
 }
-/* .dimension-field {
-	display: inline-block;
 
-} */
+ .description{
+	margin: 0 0 2rem 5rem;
+ }
+ .description p {
+	font-size: 0.8rem;
+	font-style: italic;
+	margin-bottom: 0.5rem;
+	color: grey;
+ }
+ .input-error{
+	color: red;
+}

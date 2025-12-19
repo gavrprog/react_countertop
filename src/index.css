@@ -39,6 +39,38 @@ main {
 .step-title {
 	margin: 50px 0 20px 20px;
 }
-button{
+
+.message-error{
+	color: red;
+	font-size: 0.9rem;
+	font-style: italic;
+	margin-top: 1rem;
+}
+input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  font-size: 16px;
+  color: #333;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  /* Добавление иконки */
+}
+
+input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+button {
+	margin-top: 20px;
+    padding: 10px;
+    border-radius: 3px;
+	box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.15);
 	cursor: pointer; 
+}
+button:active{
+	box-shadow: none;
+}
+form{
+	margin-bottom: 3rem;
 }

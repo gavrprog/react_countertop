@@ -114,7 +114,7 @@ function App() {
                          <Calculation result={result}/>       
           </form>
   
-          <SendCalculation />
+          {/* <SendCalculation /> */}
         </main>
       </div>
     </FormProvider>
